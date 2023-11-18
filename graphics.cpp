@@ -1,15 +1,42 @@
 #include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
 #include <iostream>
-#include <fstream>
 
 int main() {
-    // Create a window
-    const std::string imageUrl = "https://content.sportslogos.net/logos/35/919/full/xavier_musketeers_logo_primary_1983_sportslogosnet-3630.png";
-    sf::Http http("content.sportslogos.net");
-    sf::Http::Request request(imageUrl);
+    // Replace this with the path to your local image file
+    const std::string imagePath = "xavier.png";
 
-    // Create an HTTP request
+
+
+    // Load the image
+    sf::Texture texture;
+    if (!texture.loadFromFile(imagePath)) {
+        std::cerr << "Failed to load image from file." << std::endl;
+        return 1; // Exit with an error code
+    }
+
+    // Create a window
+    sf::RenderWindow window(sf::VideoMode(texture.getSize().x, texture.getSize().y), "SFML Image from File");
+
+    // Create a sprite and set its texture
+    sf::Sprite sprite(texture);
+
+    // Main loop
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+        }
+
+        // Clear the window
+        window.clear();
+
+        // Draw the sprite
+        window.draw(sprite);
+
+        // Display the contents of the window
+        window.display();
+    }
 
     return 0;
 }
